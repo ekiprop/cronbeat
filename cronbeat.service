@@ -1,0 +1,21 @@
+[Unit]
+Description=cronbeat - dead man's switch for cron jobs
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+DynamicUser=yes
+StateDirectory=cronbeat
+Environment=CRONBEAT_DB=/var/lib/cronbeat/cronbeat.db
+Environment=CRONBEAT_ADDR=127.0.0.1:8080
+Environment=CRONBEAT_BASE_URL=https://beat.example.com
+# Environment=CRONBEAT_ALERT_URL=https://hooks.slack.com/services/...
+ExecStart=/usr/local/bin/cronbeat serve
+Restart=on-failure
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+
+[Install]
+WantedBy=multi-user.target

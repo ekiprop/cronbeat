@@ -1,0 +1,4 @@
+/cronbeat
+*.db
+*.db-shm
+*.db-wal
