@@ -1,5 +1,7 @@
 # cronbeat
 
+[![ci](https://github.com/ekiprop/cronbeat/actions/workflows/ci.yml/badge.svg)](https://github.com/ekiprop/cronbeat/actions/workflows/ci.yml)
+
 A dead man's switch for cron jobs, backups, ETL pipelines, and anything else that runs on a schedule. It's one static binary with SQLite inside.
 
 Your jobs ping cronbeat when they finish. If a ping is late, the job hangs, or it exits non-zero, you get an alert in Slack, Discord, Telegram, ntfy, or any webhook.
@@ -14,14 +16,13 @@ CRONBEAT_ALERT_URL=https://hooks.slack.com/services/XXX ./cronbeat serve
 # → logs a generated API key; open http://localhost:8080 and paste it
 ```
 
-Or run it with Docker:
+Or grab a prebuilt binary (linux/macOS, amd64/arm64) from [Releases](https://github.com/ekiprop/cronbeat/releases), or run the Docker image:
 
 ```sh
-docker build -t cronbeat .
 docker run -d -p 8080:8080 -v cronbeat:/data \
   -e CRONBEAT_BASE_URL=https://beat.example.com \
   -e CRONBEAT_ALERT_URL=https://ntfy.sh/my-alerts \
-  cronbeat
+  ghcr.io/ekiprop/cronbeat:latest
 ```
 
 ## Wiring up a job
@@ -99,3 +100,11 @@ Failed deliveries are retried 4 times with backoff.
 | `CRONBEAT_API_KEY` | — | generated on first start and stored in the DB |
 
 There's a hardened systemd unit in `cronbeat.service`. Put a TLS-terminating proxy in front, such as Caddy (`beat.example.com { reverse_proxy 127.0.0.1:8080 }`).
+
+## Releasing
+
+Push a tag like `v0.1.0`. CI then runs the tests, publishes binaries plus `checksums.txt` to a GitHub release, and pushes a multi-arch image to `ghcr.io/ekiprop/cronbeat`.
+
+## License
+
+[AGPL-3.0](LICENSE). You can self-host it freely. If you modify cronbeat and offer it to others as a network service, you must publish your changes under the same license.
