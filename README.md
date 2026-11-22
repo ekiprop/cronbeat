@@ -99,7 +99,16 @@ Failed deliveries are retried 4 times with backoff.
 | `CRONBEAT_ALERT_URL` | `--alert-url` | — |
 | `CRONBEAT_API_KEY` | — | generated on first start and stored in the DB |
 
-There's a hardened systemd unit in `cronbeat.service`, and a Docker Compose + Caddy + backups guide in [`docs/PRODUCTION.md`](docs/PRODUCTION.md). Put a TLS-terminating proxy in front, such as Caddy (`beat.example.com { reverse_proxy 127.0.0.1:8080 }`).
+There's a hardened systemd unit in `cronbeat.service`, and a Docker Compose + Caddy + backups guide in [`docs/OPERATIONS.md`](docs/OPERATIONS.md). Put a TLS-terminating proxy in front, such as Caddy (`beat.example.com { reverse_proxy 127.0.0.1:8080 }`).
+
+## Documentation
+
+| Doc | For |
+|---|---|
+| [docs/API.md](docs/API.md) | every endpoint: pings, the JSON API and its errors, metrics, alert formats |
+| [docs/OPERATIONS.md](docs/OPERATIONS.md) | running it in production: Docker or systemd, configuration, backups and restore, upgrades, troubleshooting |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | how it works: components, a check's states, the overdue loop, data, security |
+| [docs/DEVELOPMENT.md](docs/DEVELOPMENT.md) | building, testing and releasing; how to add an alert format or a check field |
 
 ## Releasing
 
